@@ -96,7 +96,7 @@ class Calculator extends Component {
 
     return (
       <Frame>
-        <Display>{currentDisplay}</Display>
+        <Display id="display">{currentDisplay}</Display>
         <Buttons>
           <Row>
             <Button id="clear" onClick={this.handleClick}>
