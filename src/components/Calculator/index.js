@@ -5,16 +5,40 @@ import { Frame, Row, Buttons, Display, Button } from './styles';
 class Calculator extends Component {
   constructor(props) {
     super(props);
-    this.state = [];
+    this.state = {
+      current: '',
+    };
   }
 
-  handleClick = event => {};
+  handleClick = event => {
+    const { current } = this.state;
+
+    const newAction = event.target.textContent;
+
+    switch (newAction) {
+      case 'AC':
+        this.setState({
+          current: '',
+        });
+        break;
+      case '=':
+        this.setState({
+          current: eval(current),
+        });
+        break;
+      default:
+        this.setState({
+          current: current + newAction,
+        });
+    }
+  };
 
   render() {
+    const { current } = this.state;
+
     return (
       <Frame>
-        <Display>1 + 5</Display>
-        <Display>-</Display>
+        <Display>{current}</Display>
         <Buttons>
           <Row>
             <Button id="clear" onClick={this.handleClick}>

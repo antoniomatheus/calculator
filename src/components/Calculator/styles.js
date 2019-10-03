@@ -9,9 +9,10 @@ export const Frame = styled.div`
 `;
 
 export const Display = styled.span`
-  height: 25px;
-  padding: 4px;
+  height: 50px;
+  padding: 10px 0;
   text-align: right;
+  font-size: 1.5rem;
 `;
 
 export const Buttons = styled.div`
