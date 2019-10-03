@@ -2,43 +2,101 @@ import React, { Component } from 'react';
 
 import { Frame, Row, Buttons, Display, Button } from './styles';
 
+import calculate from '../../helpers/calculate';
+
 class Calculator extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      current: '',
+      currentDisplay: '',
+      currentReal: '',
+      numParenthesis: 0,
+      newParenthesis: true,
     };
   }
 
   handleClick = event => {
-    const { current } = this.state;
+    const {
+      currentDisplay,
+      currentReal,
+      numParenthesis,
+      newParenthesis,
+    } = this.state;
 
     const newAction = event.target.textContent;
 
     switch (newAction) {
       case 'AC':
         this.setState({
-          current: '',
+          currentDisplay: '',
+          currentReal: '',
+          newParenthesis: true,
+          numParenthesis: 0,
         });
         break;
       case '=':
         this.setState({
-          current: eval(current),
+          currentDisplay: calculate(currentReal),
+          currentReal: calculate(currentReal),
+          newParenthesis: true,
+          numParenthesis: 0,
+        });
+        break;
+      case '( )':
+        if (
+          newParenthesis &&
+          Number.isNaN(Number(currentReal[currentReal.length - 1])) &&
+          currentReal[currentReal.length - 1] !== ')'
+        ) {
+          this.setState({
+            currentDisplay: `${currentDisplay}(`,
+            currentReal: `${currentReal}(`,
+            numParenthesis: numParenthesis + 1,
+            newParenthesis: false,
+          });
+        } else if (numParenthesis > 0) {
+          this.setState({
+            currentDisplay: `${currentDisplay})`,
+            currentReal: `${currentReal})`,
+            numParenthesis: numParenthesis - 1,
+          });
+        }
+        break;
+      case '%':
+        this.setState({
+          currentDisplay: `${calculate(currentReal) / 100}`,
+          currentReal: `${calculate(currentReal) / 100}`,
+        });
+        break;
+      case 'X':
+        this.setState({
+          currentDisplay: `${currentDisplay}X`,
+          currentReal: `${currentReal}*`,
+        });
+        break;
+      case '/':
+      case '+':
+      case '-':
+        this.setState({
+          currentDisplay: `${currentDisplay}${newAction}`,
+          currentReal: `${currentReal}${newAction}`,
+          newParenthesis: true,
         });
         break;
       default:
         this.setState({
-          current: current + newAction,
+          currentDisplay: `${currentDisplay}${newAction}`,
+          currentReal: `${currentReal}${newAction}`,
         });
     }
   };
 
   render() {
-    const { current } = this.state;
+    const { currentDisplay } = this.state;
 
     return (
       <Frame>
-        <Display>{current}</Display>
+        <Display>{currentDisplay}</Display>
         <Buttons>
           <Row>
             <Button id="clear" onClick={this.handleClick}>
