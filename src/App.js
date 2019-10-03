@@ -1,7 +1,17 @@
 import React from 'react';
 
+import GlobalStyle from './styles/global';
+import Calculator from './components/Calculator';
+
+import { Container } from './styles';
+
 function App() {
-  return <h1>Hello</h1>;
+  return (
+    <Container>
+      <Calculator />
+      <GlobalStyle />
+    </Container>
+  );
 }
 
 export default App;
